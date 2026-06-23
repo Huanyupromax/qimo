@@ -1,5 +1,8 @@
 ﻿# 辩境 - 完整依赖（含面部/语音分析）
 # 精简版见 requirements.txt
+# 注意：完整安装前需先执行：
+#   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+
 flask>=2.3.0
 flask-cors>=4.0.0
 openai>=1.0.0
@@ -8,7 +11,7 @@ gunicorn>=20.1.0
 pydantic>=2.0.0
 python-dotenv>=1.0.0
 
-# 面部表情分析
+# 面部表情分析（依赖 TensorFlow，自动下载）
 deepface>=0.0.80
 opencv-python>=4.8.0
 
@@ -16,7 +19,5 @@ opencv-python>=4.8.0
 librosa>=0.10.0
 soundfile>=0.12.0
 
-# SenseVoiceSmall 语音识别（可选，需先安装 PyTorch）
-# funasr>=1.0.0
-# 运行完整安装前需先：
-# pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+# SenseVoiceSmall 语音识别（需先装 PyTorch）
+funasr>=1.0.0
