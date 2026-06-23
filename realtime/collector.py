@@ -1,10 +1,33 @@
+import time
 from scoring import ScoringEngine
+
 class RealtimeCollector:
- def __init__(s):s.scoring=ScoringEngine();s.current_session=None
- def start_session(s,sid):s.current_session=sid;s.scoring=ScoringEngine()
- def get_scoring(s):return s.scoring
- def get_scoring_scores(s):return s.scoring.get()
- def get_scoring_report(s,u="",t="",rd=0):return s.scoring.report(user=u,topic=t,rd=rd)
- def add_text(s,*a,**k):return {}
- def add_audio(s,*a,**k):return {}
- def add_video(s,*a,**k):return {}
+    def __init__(self):
+        self.text = type("",(),{"buffer":[],"get_stats":lambda s:{"total":0}})
+        self.audio = type("",(),{"buffer":[]})
+        self.video = type("",(),{"buffer":[],"frame_count":0})
+        self.scoring = ScoringEngine()
+        self.current_session = None
+    def start_session(self, sid):
+        self.current_session = sid
+        self.scoring = ScoringEngine()
+    def add_text(self, speaker, content, ts=None):
+        ts = ts or time.time()
+        entry = {"speaker":speaker,"content":content,"timestamp":ts,"nlp":None}
+        self.text.buffer.append(entry)
+        return entry
+    def add_audio(self, data, ts=None):
+        ts = ts or time.time()
+        return {"timestamp":ts}
+    def add_video(self, data, ts=None):
+        ts = ts or time.time()
+        self.video.frame_count += 1
+        return {"timestamp":ts}
+    def get_scoring(self):
+        return self.scoring
+    def get_scoring_scores(self):
+        return self.scoring.get()
+    def get_scoring_report(self, user="", topic="", rd=0):
+        return self.scoring.report(user=user, topic=topic, rd=rd)
+    def save_analysis(self, data):
+        pass

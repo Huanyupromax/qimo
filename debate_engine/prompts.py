@@ -1,8 +1,27 @@
-import json
-S="You are a debate AI. Topic: {topic}. Position: {pos}."
-def build_system_prompt(t,p):
- pn={"pro":"Pro","con":"Con"};return S.format(topic=t,pos=pn.get(p,p))
-def parse_llm_response(t):
- try:d=json.loads(t.strip());return d if"speech"in d else{"speech":t}
- except:return{"speech":t,"argument_type":"rebuttal","_parsed":False}
-def build_round_prompt(*a,**k):return""
+import json, re
+
+SYSTEM = """你是辩境系统的专业AI辩手。
+辩题: {topic}
+立场: {position}
+你必须始终维护这一立场。
+每轮发言200-400字。
+输出JSON格式: {{"speech":"发言","argument_type":"opening|rebuttal","main_claim":"论点","reasoning":[],"evidence":[]}}"""
+
+def build_system_prompt(topic, position):
+    pm = {"pro":"正方（支持）","con":"反方（反对）"}
+    return SYSTEM.format(topic=topic, position=pm.get(position,position))
+
+def build_round_prompt(rt, topic="", position="", opponent=""):
+    pm = {"pro":"正方","con":"反方"}
+    pos = pm.get(position,position)
+    prompts = {"opening": f"开场陈词。辩题:{topic}。立场:{pos}",
+               "rebuttal": f"反驳对方。对方发言:{opponent}"}
+    return prompts.get(rt, prompts["rebuttal"])
+
+def parse_llm_response(text):
+    t = text.strip()
+    try:
+        d = json.loads(t)
+        if "speech" in d: return d
+    except: pass
+    return {"speech": t, "argument_type": "rebuttal", "main_claim": "", "reasoning": [], "evidence": [], "_parsed": False}

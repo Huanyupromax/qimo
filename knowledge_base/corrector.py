@@ -1,8 +1,10 @@
 class KnowledgeBaseCorrector:
- def __init__(s):s.log=[]
- def correct(s,t=None,v=None,f=None):
-  r={}
-  if t:r["text"]=dict(t)
-  if v:r["voice"]=dict(v)
-  if f:r["face"]=dict(f)
-  s.log.append({"type":"correction"});return r
+    def __init__(self):
+        self.log = []
+    def correct(self, text=None, voice=None, face=None):
+        result = {}
+        if text: result["text"] = dict(text)
+        if voice: result["voice"] = dict(voice)
+        if face: result["face"] = dict(face)
+        self.log.append({"type":"correction"})
+        return result
