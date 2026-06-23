@@ -1,1 +1,1 @@
-7da94f492e2ed29ee68cf80ecb50a8ef3faaa527
+web: gunicorn app:app

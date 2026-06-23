@@ -1,1 +1,8 @@
-c5d6e3fd94a6514b69ca95d001e1c8d5011a450a
+venv/
+__pycache__/
+*.pyc
+.env
+data/
+*.db
+*.log
+startup.txt
