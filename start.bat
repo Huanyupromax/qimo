@@ -5,19 +5,21 @@ echo ============================================
 echo    辩境 - AI 辩论系统 启动中...
 echo ============================================
 echo.
-:: Check virtual env
 if not exist venv\Scripts\activate.bat (
     echo [错误] 未找到虚拟环境，请先运行 setup.bat
     pause
     exit /b 1
 )
-:: Check .env
 if not exist .env (
-    echo DEEPSEEK_API_KEY=你的DeepSeek密钥 > .env
-    echo [提示] 请编辑 .env 文件填入 DeepSeek API Key
+    copy .env.example .env >nul 2>&1
+    echo [提示] 已创建 .env 文件
+    echo 请用记事本打开 .env 文件
+    echo 将 DEEPSEEK_API_KEY 改为你的 DeepSeek API Key
+    echo 然后重新运行 start.bat
     echo.
+    pause
+    exit /b 1
 )
-:: Start
 call .\venv\Scripts\activate.bat
 echo [信息] 启动辩论系统...
 echo [信息] 浏览器访问: http://127.0.0.1:5000
