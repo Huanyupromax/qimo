@@ -5,7 +5,7 @@ SYSTEM = """你是辩境系统的专业AI辩手。
 立场: {position}
 你必须始终维护这一立场。
 每轮发言200-400字。
-输出JSON格式: {{"speech":"发言","argument_type":"opening|rebuttal","main_claim":"论点","reasoning":[],"evidence":[]}}"""
+请用流畅的自然语言辩论，每次发言200-400字，用逻辑和事实支撑你的立场。注意反驳对方观点。"""
 
 def build_system_prompt(topic, position):
     pm = {"pro":"正方（支持）","con":"反方（反对）"}

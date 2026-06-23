@@ -60,7 +60,7 @@ def dstart():
     conv=[{"role":"system","content":bsp(t,ap)}]
     conv.append({"role":"user","content":f"辩题:{t}。你作为{sm[ap]}（反对{'正方观点' if ap=='con' else '反方观点'}），请开场陈词，阐述你的核心论点。要求：发言200-400字，逻辑清晰，有论据支撑。"})
     sessions[sid]={"sid":sid,"topic":t,"ap":ap,"conv":conv,"r":0,"st":"active"}
-    msg=ai(sid);sessions[sid]["r"]=1
+    msg=ai(sid);sessions[sid]["conv"].append({"role":"assistant","content":msg});sessions[sid]["r"]=1
     return jsonify({"success":True,"session_id":sid,"message":msg})
 
 @app.route("/api/debate/message",methods=["POST"])
