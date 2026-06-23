@@ -254,7 +254,7 @@ var currentUser="",userPos="pro",debateActive=false,sessionId="",roundNum=0;
 
 function loginSuccess(u){currentUser=u;document.getElementById("loginPanel").style.display="none";document.getElementById("debateArena").style.display="block";document.getElementById("chatInput").disabled=false;document.getElementById("sendBtn").disabled=false;}
 
-function setPosition(p){userPos=p;document.querySelectorAll(".pos-btn").forEach(function(b){b.classList.remove("active","pro","con")});document.getElementById("userPosDisplay").textContent=p==="pro"?"正方":"反方";document.getElementById("aiPosDisplay").textContent=p==="pro"?"反方":"正方";var ab=document.querySelector(".pos-btn."+p);if(ab){ab.classList.add("active",p)}}
+function setPosition(p){userPos=p;var bs=document.querySelectorAll(".pos-btn");bs[0].className="pos-btn";bs[1].className="pos-btn";document.getElementById("userPosDisplay").textContent=p==="pro"?"正方":"反方";document.getElementById("aiPosDisplay").textContent=p==="pro"?"反方":"正方";if(p==="pro"){bs[0].classList.add("active","pro")}else{bs[1].classList.add("active","con")}}
 
 var camStream=null,camOn=false;
 
