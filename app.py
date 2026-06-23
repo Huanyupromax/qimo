@@ -6,8 +6,6 @@ from database import UserDB,ReportDB
 from scoring import ScoringEngine as SE
 from debate_engine.prompts import build_system_prompt as bsp
 from modalities.text import TextAnalyzer
-from modalities.face import FaceAnalyzer
-from modalities.voice import VoiceAnalyzer
 app=Flask(__name__)
 app.secret_key=os.urandom(24).hex()
 TPL=pathlib.Path(__file__).parent/"template.html"
@@ -15,8 +13,7 @@ HTML=TPL.read_text(encoding="utf-8") if TPL.exists() else "<h1>No template</h1>"
 db=UserDB()
 report_db=ReportDB()
 text_analyzer=TextAnalyzer()
-face_analyzer=FaceAnalyzer()
-voice_analyzer=VoiceAnalyzer()
+# face/voice analyzers initialized lazily
 sessions={}
 ds=None;k=os.environ.get("DEEPSEEK_API_KEY","")
 if k:
@@ -135,13 +132,14 @@ def rsave():
     try: report_db.save(rid,u,data);return jsonify({"success":True})
     except: return jsonify({"success":False})
 
-
 @app.route("/api/analyze/face",methods=["POST"])
 def af():
     d=request.get_json(force=True);sid=d.get("session_id","");img=d.get("image","")
     if not sid or sid not in sessions or not img: return jsonify({"success":False})
     try:
-        r=face_analyzer.analyze_base64(img)
+        from modalities.face import FaceAnalyzer
+        fa=FaceAnalyzer()
+        r=fa.analyze_base64(img)
         if r: sessions[sid]["face_data"].append(r.model_dump());return jsonify({"success":True,"emotion":r.dominant_emotion})
     except: pass
     return jsonify({"success":False})
@@ -153,9 +151,11 @@ def av():
     if "audio" not in request.files: return jsonify({"success":False})
     import tempfile
     try:
+        from modalities.voice import VoiceAnalyzer
+        va=VoiceAnalyzer()
         f=request.files["audio"];tmp=tempfile.NamedTemporaryFile(suffix=".wav",delete=False)
         f.save(tmp);tmp.close()
-        r=voice_analyzer.analyze(tmp.name)
+        r=va.analyze(tmp.name)
         os.unlink(tmp.name)
         if r: sessions[sid]["voice_data"].append(r.model_dump());return jsonify({"success":True})
     except: pass
@@ -171,7 +171,8 @@ def ai(sid):
     rrs=RR.get(s["topic"],{}).get(s["ap"],["请继续发言..."])
     return random.choice(rrs)
 
-if __name__=="__main__":
-    p=int(os.environ.get("PORT",5000))
-    print(f"辩境启动 http://127.0.0.1:{p}")
-    app.run(host="0.0.0.0",port=p)
+
+if __name__ == "__main__":
+    import webbrowser
+    webbrowser.open("http://127.0.0.1:5000")
+    app.run(host="0.0.0.0", port=5000, debug=True, threaded=True)

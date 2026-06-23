@@ -1,11 +1,11 @@
 @echo off
-chcp 65001 >nul
+cd /d "%~dp0"
 title 辩境 - AI辩论系统
 echo ============================================
 echo    辩境 - AI 辩论系统 启动中...
 echo ============================================
 echo.
-if not exist venv\Scripts\activate.bat (
+if not exist venv\Scripts\python.exe (
     echo [错误] 未找到虚拟环境，请先运行 setup.bat
     pause
     exit /b 1
@@ -15,15 +15,14 @@ if not exist .env (
     echo [提示] 已创建 .env 文件
     echo 请用记事本打开 .env 文件
     echo 将 DEEPSEEK_API_KEY 改为你的 DeepSeek API Key
-    echo 然后重新运行 start.bat
-    echo.
     pause
     exit /b 1
 )
-call .\venv\Scripts\activate.bat
-echo [信息] 启动辩论系统...
-echo [信息] 浏览器访问: http://127.0.0.1:5000
-echo [信息] 按 Ctrl+C 停止服务
+echo [1/3] 正在启动服务器（约需15-25秒）...
+echo [2/3] 浏览器访问: http://127.0.0.1:5000
+echo [3/3] 请勿关闭本窗口
 echo.
-python app.py
+"%~dp0venv\Scripts\python.exe" app.py
+echo.
+echo [错误] 服务器已停止
 pause
