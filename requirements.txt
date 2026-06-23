@@ -1,0 +1,1 @@
+flask>=2.3.0\nflask-cors>=4.0.0\nopenai>=1.0.0\nhttpx>=0.25.0\ngunicorn>=20.1.0\npydantic>=2.0.0\npython-dotenv>=1.0.0\n
