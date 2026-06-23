@@ -6,6 +6,8 @@ from database import UserDB,ReportDB
 from scoring import ScoringEngine as SE
 from debate_engine.prompts import build_system_prompt as bsp
 from modalities.text import TextAnalyzer
+from modalities.face import FaceAnalyzer
+from modalities.voice import VoiceAnalyzer
 app=Flask(__name__)
 app.secret_key=os.urandom(24).hex()
 TPL=pathlib.Path(__file__).parent/"template.html"
@@ -13,6 +15,8 @@ HTML=TPL.read_text(encoding="utf-8") if TPL.exists() else "<h1>No template</h1>"
 db=UserDB()
 report_db=ReportDB()
 text_analyzer=TextAnalyzer()
+face_analyzer=FaceAnalyzer()
+voice_analyzer=VoiceAnalyzer()
 sessions={}
 ds=None;k=os.environ.get("DEEPSEEK_API_KEY","")
 if k:
@@ -59,7 +63,7 @@ def dstart():
     sm={"pro":"正方","con":"反方"}
     conv=[{"role":"system","content":bsp(t,ap)}]
     conv.append({"role":"user","content":f"辩题:{t}。你作为{sm[ap]}（反对{'正方观点' if ap=='con' else '反方观点'}），请开场陈词，阐述你的核心论点。要求：发言200-400字，逻辑清晰，有论据支撑。"})
-    sessions[sid]={"sid":sid,"topic":t,"ap":ap,"conv":conv,"r":0,"st":"active"}
+    sessions[sid]={"sid":sid,"topic":t,"ap":ap,"conv":conv,"r":0,"st":"active","face_data":[],"voice_data":[]}
     msg=ai(sid);sessions[sid]["conv"].append({"role":"assistant","content":msg});sessions[sid]["r"]=1
     return jsonify({"success":True,"session_id":sid,"message":msg})
 
@@ -97,6 +101,12 @@ def sr():
                 })
             except:
                 se.from_nlp({"rebuttal_ratio":0.3,"logical_density":0.5,"evidence_density":0.2,"emotion_score":0.1})
+    for fd in s.get("face_data",[]):
+        try: se.from_face(fd)
+        except: pass
+    for vd in s.get("voice_data",[]):
+        try: se.from_voice(vd)
+        except: pass
     rpt=se.report(user=d.get("username",""),topic=s["topic"],rd=s["r"])
     rid=str(uuid.uuid4());rpt["report_id"]=rid
     try: report_db.save(rid,d.get("username",""),rpt)
@@ -124,6 +134,32 @@ def rsave():
     if not rid or not u: return jsonify({"success":False})
     try: report_db.save(rid,u,data);return jsonify({"success":True})
     except: return jsonify({"success":False})
+
+
+@app.route("/api/analyze/face",methods=["POST"])
+def af():
+    d=request.get_json(force=True);sid=d.get("session_id","");img=d.get("image","")
+    if not sid or sid not in sessions or not img: return jsonify({"success":False})
+    try:
+        r=face_analyzer.analyze_base64(img)
+        if r: sessions[sid]["face_data"].append(r.model_dump());return jsonify({"success":True,"emotion":r.dominant_emotion})
+    except: pass
+    return jsonify({"success":False})
+
+@app.route("/api/analyze/voice",methods=["POST"])
+def av():
+    sid=request.form.get("session_id","")
+    if not sid or sid not in sessions: return jsonify({"success":False})
+    if "audio" not in request.files: return jsonify({"success":False})
+    import tempfile
+    try:
+        f=request.files["audio"];tmp=tempfile.NamedTemporaryFile(suffix=".wav",delete=False)
+        f.save(tmp);tmp.close()
+        r=voice_analyzer.analyze(tmp.name)
+        os.unlink(tmp.name)
+        if r: sessions[sid]["voice_data"].append(r.model_dump());return jsonify({"success":True})
+    except: pass
+    return jsonify({"success":False})
 
 def ai(sid):
     s=sessions[sid]
