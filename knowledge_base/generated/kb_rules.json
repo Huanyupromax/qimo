@@ -1,0 +1,83 @@
+{
+  "emotion_to_feature": {
+    "angry": {
+      "aggression_level": 0.85,
+      "logic_level": 0.2,
+      "rhythm_level": 0.7,
+      "adaptability": 0.3,
+      "presence": 0.9
+    },
+    "happy": {
+      "aggression_level": 0.3,
+      "logic_level": 0.75,
+      "rhythm_level": 0.6,
+      "adaptability": 0.85,
+      "presence": 0.8
+    },
+    "neutral": {
+      "aggression_level": 0.4,
+      "logic_level": 0.9,
+      "rhythm_level": 0.5,
+      "adaptability": 0.6,
+      "presence": 0.5
+    },
+    "sad": {
+      "aggression_level": 0.15,
+      "logic_level": 0.5,
+      "rhythm_level": 0.3,
+      "adaptability": 0.4,
+      "presence": 0.35
+    },
+    "surprise": {
+      "aggression_level": 0.45,
+      "logic_level": 0.55,
+      "rhythm_level": 0.8,
+      "adaptability": 0.9,
+      "presence": 0.75
+    },
+    "fear": {
+      "aggression_level": 0.6,
+      "logic_level": 0.35,
+      "rhythm_level": 0.65,
+      "adaptability": 0.5,
+      "presence": 0.7
+    }
+  },
+  "feature_to_dpm": {
+    "rebuttal_density": {
+      "aggression": 8,
+      "logic": 6,
+      "rhythm": 5,
+      "adaptability": 7,
+      "presence": 4
+    },
+    "logic_density": {
+      "aggression": 3,
+      "logic": 9,
+      "rhythm": 4,
+      "adaptability": 6,
+      "presence": 5
+    },
+    "evidence_density": {
+      "aggression": 2,
+      "logic": 8,
+      "rhythm": 3,
+      "adaptability": 5,
+      "presence": 6
+    },
+    "volume_peak": {
+      "aggression": 7,
+      "logic": 2,
+      "rhythm": 6,
+      "adaptability": 4,
+      "presence": 9
+    },
+    "speech_rate": {
+      "aggression": 5,
+      "logic": 4,
+      "rhythm": 8,
+      "adaptability": 3,
+      "presence": 7
+    }
+  }
+}

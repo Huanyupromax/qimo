@@ -6,3 +6,8 @@ data/
 *.db
 *.log
 startup.txt
+
+template_backup.html
+_*.py
+_*.html
+_fix_*
