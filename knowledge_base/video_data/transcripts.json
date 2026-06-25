@@ -1,0 +1,146 @@
+[
+  {
+    "file": "1.mp3",
+    "size_mb": 68.5,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.643,
+    "volume_avg": 0.037,
+    "zero_crossing_rate": 0.2538,
+    "speech_ratio": 47.2
+  },
+  {
+    "file": "10.mp3",
+    "size_mb": 73.6,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.149,
+    "volume_avg": 0.006,
+    "zero_crossing_rate": 0.1225,
+    "speech_ratio": 19.0
+  },
+  {
+    "file": "11.mp3",
+    "size_mb": 73.6,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.149,
+    "volume_avg": 0.006,
+    "zero_crossing_rate": 0.1225,
+    "speech_ratio": 19.0
+  },
+  {
+    "file": "12.mp3",
+    "size_mb": 75.3,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.263,
+    "volume_avg": 0.014,
+    "zero_crossing_rate": 0.097,
+    "speech_ratio": 41.6
+  },
+  {
+    "file": "初赛F组第一场（音频）.mp3",
+    "size_mb": 525.4,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.207,
+    "volume_avg": 0.019,
+    "zero_crossing_rate": 0.1155,
+    "speech_ratio": 48.6
+  },
+  {
+    "file": "初赛G组第一场（音频）.mp3",
+    "size_mb": 833.3,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.464,
+    "volume_avg": 0.024,
+    "zero_crossing_rate": 0.1897,
+    "speech_ratio": 45.4
+  },
+  {
+    "file": "初赛G组第二场（音频）.mp3",
+    "size_mb": 753.8,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.617,
+    "volume_avg": 0.051,
+    "zero_crossing_rate": 0.1689,
+    "speech_ratio": 50.5
+  },
+  {
+    "file": "初赛G组第三场（音频）.mp3",
+    "size_mb": 772.5,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.462,
+    "volume_avg": 0.022,
+    "zero_crossing_rate": 0.215,
+    "speech_ratio": 46.5
+  },
+  {
+    "file": "2.mp3",
+    "size_mb": 71.0,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.567,
+    "volume_avg": 0.036,
+    "zero_crossing_rate": 0.2189,
+    "speech_ratio": 53.0
+  },
+  {
+    "file": "3.mp3",
+    "size_mb": 70.1,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.931,
+    "volume_avg": 0.068,
+    "zero_crossing_rate": 0.2262,
+    "speech_ratio": 50.4
+  },
+  {
+    "file": "4.mp3",
+    "size_mb": 67.0,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.285,
+    "volume_avg": 0.015,
+    "zero_crossing_rate": 0.143,
+    "speech_ratio": 41.4
+  },
+  {
+    "file": "5.mp3",
+    "size_mb": 69.1,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.191,
+    "volume_avg": 0.009,
+    "zero_crossing_rate": 0.1577,
+    "speech_ratio": 28.4
+  },
+  {
+    "file": "6月22日.mp3",
+    "size_mb": 69.4,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.238,
+    "volume_avg": 0.01,
+    "zero_crossing_rate": 0.1474,
+    "speech_ratio": 32.5
+  },
+  {
+    "file": "6月22日(1).mp3",
+    "size_mb": 61.3,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.675,
+    "volume_avg": 0.036,
+    "zero_crossing_rate": 0.2024,
+    "speech_ratio": 47.7
+  },
+  {
+    "file": "6月22日.mp3",
+    "size_mb": 71.3,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.619,
+    "volume_avg": 0.047,
+    "zero_crossing_rate": 0.1708,
+    "speech_ratio": 46.5
+  },
+  {
+    "file": "9.mp3",
+    "size_mb": 70.0,
+    "transcript": "[识别失败]",
+    "volume_peak": 0.879,
+    "volume_avg": 0.047,
+    "zero_crossing_rate": 0.1861,
+    "speech_ratio": 47.4
+  }
+]

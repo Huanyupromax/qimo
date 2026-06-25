@@ -1,0 +1,146 @@
+[
+  {
+    "file": "1.mp3",
+    "size_mb": 68.5,
+    "duration_sec": 30.0,
+    "volume_peak": 0.624,
+    "volume_avg": 0.029,
+    "speech_ratio": 40.6,
+    "zero_crossing_rate": 0.1339
+  },
+  {
+    "file": "10.mp3",
+    "size_mb": 73.6,
+    "duration_sec": 30.0,
+    "volume_peak": 0.128,
+    "volume_avg": 0.005,
+    "speech_ratio": 17.1,
+    "zero_crossing_rate": 0.0772
+  },
+  {
+    "file": "11.mp3",
+    "size_mb": 73.6,
+    "duration_sec": 30.0,
+    "volume_peak": 0.128,
+    "volume_avg": 0.005,
+    "speech_ratio": 17.1,
+    "zero_crossing_rate": 0.0772
+  },
+  {
+    "file": "12.mp3",
+    "size_mb": 75.3,
+    "duration_sec": 30.0,
+    "volume_peak": 0.248,
+    "volume_avg": 0.013,
+    "speech_ratio": 37.5,
+    "zero_crossing_rate": 0.0528
+  },
+  {
+    "file": "初赛F组第一场（音频）.mp3",
+    "size_mb": 525.4,
+    "duration_sec": 30.0,
+    "volume_peak": 0.194,
+    "volume_avg": 0.019,
+    "speech_ratio": 48.8,
+    "zero_crossing_rate": 0.0588
+  },
+  {
+    "file": "初赛G组第一场（音频）.mp3",
+    "size_mb": 833.3,
+    "duration_sec": 30.0,
+    "volume_peak": 0.474,
+    "volume_avg": 0.021,
+    "speech_ratio": 44.6,
+    "zero_crossing_rate": 0.0875
+  },
+  {
+    "file": "初赛G组第二场（音频）.mp3",
+    "size_mb": 753.8,
+    "duration_sec": 30.0,
+    "volume_peak": 0.607,
+    "volume_avg": 0.056,
+    "speech_ratio": 51.2,
+    "zero_crossing_rate": 0.0776
+  },
+  {
+    "file": "初赛G组第三场（音频）.mp3",
+    "size_mb": 772.5,
+    "duration_sec": 30.0,
+    "volume_peak": 0.379,
+    "volume_avg": 0.024,
+    "speech_ratio": 47.8,
+    "zero_crossing_rate": 0.0917
+  },
+  {
+    "file": "2.mp3",
+    "size_mb": 71.0,
+    "duration_sec": 30.0,
+    "volume_peak": 0.55,
+    "volume_avg": 0.034,
+    "speech_ratio": 52.2,
+    "zero_crossing_rate": 0.1138
+  },
+  {
+    "file": "3.mp3",
+    "size_mb": 70.1,
+    "duration_sec": 30.0,
+    "volume_peak": 0.897,
+    "volume_avg": 0.068,
+    "speech_ratio": 53.9,
+    "zero_crossing_rate": 0.1214
+  },
+  {
+    "file": "4.mp3",
+    "size_mb": 67.0,
+    "duration_sec": 30.0,
+    "volume_peak": 0.185,
+    "volume_avg": 0.009,
+    "speech_ratio": 32.0,
+    "zero_crossing_rate": 0.0761
+  },
+  {
+    "file": "5.mp3",
+    "size_mb": 69.1,
+    "duration_sec": 30.0,
+    "volume_peak": 0.18,
+    "volume_avg": 0.006,
+    "speech_ratio": 19.8,
+    "zero_crossing_rate": 0.0979
+  },
+  {
+    "file": "6月22日.mp3",
+    "size_mb": 69.4,
+    "duration_sec": 30.0,
+    "volume_peak": 0.19,
+    "volume_avg": 0.008,
+    "speech_ratio": 25.8,
+    "zero_crossing_rate": 0.067
+  },
+  {
+    "file": "6月22日(1).mp3",
+    "size_mb": 61.3,
+    "duration_sec": 30.0,
+    "volume_peak": 0.66,
+    "volume_avg": 0.037,
+    "speech_ratio": 50.2,
+    "zero_crossing_rate": 0.1072
+  },
+  {
+    "file": "6月22日.mp3",
+    "size_mb": 71.3,
+    "duration_sec": 30.0,
+    "volume_peak": 0.585,
+    "volume_avg": 0.037,
+    "speech_ratio": 44.4,
+    "zero_crossing_rate": 0.101
+  },
+  {
+    "file": "9.mp3",
+    "size_mb": 70.0,
+    "duration_sec": 30.0,
+    "volume_peak": 0.723,
+    "volume_avg": 0.036,
+    "speech_ratio": 42.9,
+    "zero_crossing_rate": 0.1189
+  }
+]
