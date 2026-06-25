@@ -57,6 +57,14 @@
 .hm-close{display:block;margin:15px auto 0;padding:10px 28px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,215,150,0.1);border-radius:8px;color:rgba(255,215,180,0.5);font-size:13px;cursor:pointer;letter-spacing:2px}
 @media(max-width:600px){#reportPage .rp-card{padding:20px}.stats-grid{grid-template-columns:repeat(2,1fr)}.score-grid{grid-template-columns:repeat(3,1fr)}#historyModal .hm-box{width:90vw}}
 
+
+.speak-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,215,150,0.12);border-radius:50%;width:30px;height:30px;font-size:14px;cursor:pointer;transition:all 0.3s;display:inline-flex;align-items:center;justify-content:center;margin-left:8px;vertical-align:middle;color:rgba(255,215,180,0.4)}
+.speak-btn:hover{background:rgba(255,255,255,0.08);color:rgba(255,215,180,0.8);border-color:rgba(255,215,150,0.3)}
+.speak-btn.speaking{background:rgba(255,87,87,0.15);border-color:rgba(255,87,87,0.3);color:#ff6b6b;animation:pulse 0.5s infinite}
+.tts-toggle{background:rgba(255,255,255,0.04);border:1px solid rgba(255,215,150,0.08);border-radius:8px;padding:5px 10px;font-size:11px;cursor:pointer;transition:all 0.3s;color:rgba(255,215,180,0.4);letter-spacing:1px;margin-left:10px}
+.tts-toggle:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,215,150,0.15)}
+.tts-toggle.active{background:rgba(100,200,255,0.1);border-color:rgba(100,200,255,0.25);color:#64c8ff}
+
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
@@ -182,7 +190,7 @@
 
 <div class="topic-display">&#x1F3DB; 辩题：<span id="headerTopic">未选择</span></div>
 
-<div class="round-display">第 <span id="roundDisplay">0</span> 回合</div>
+<div class="round-display">第 <span id="roundDisplay">0</span> 回合 <button class="tts-toggle" id="ttsBtn" onclick="toggleTTS()">🔇 静音</button></div>
 
 </div>
 
@@ -347,7 +355,7 @@ async function startDebate(){var topic=document.getElementById("topicSelect").va
 
 async function sendMessage(){var inp=document.getElementById("chatInput"),msg=inp.value.trim();if(!msg||!debateActive)return;inp.value="";addMsg("user",msg,roundNum);captureFace();try{var r=await fetch("/api/debate/message",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({session_id:sessionId,message:msg,round:roundNum})});var d=await r.json();if(d.success){roundNum++;document.getElementById("roundDisplay").textContent=roundNum;addMsg("ai",d.message,roundNum)}else{addMsg("system","AI暂时无法回应","")}}catch(e){addMsg("system","网络错误","")}}
 
-function addMsg(type,content,rd){var chat=document.getElementById("debateChat");if(type==="system"){var dv4=document.createElement("div");dv4.style.cssText="text-align:center;padding:10px;color:rgba(255,215,180,0.25);font-size:13px;letter-spacing:2px;";dv4.textContent=content;chat.appendChild(dv4)}else{if(type==="ai"){var lb=document.createElement("div");lb.className="msg-round-label";lb.textContent="-- 第 "+rd+" 回合 --";chat.appendChild(lb)}var dv2=document.createElement("div");dv2.className="msg "+type;var now=new Date();var ts=(now.getHours()<10?"0":"")+now.getHours()+":"+(now.getMinutes()<10?"0":"")+now.getMinutes();dv2.innerHTML='<div class=\"msg-sender\">'+(type==="ai"?"&#x1F916; AI辩手":"&#x1F464; "+currentUser)+'</div><div>'+content+'</div><div class=\"msg-time\">'+ts+'</div>';chat.appendChild(dv2)}chat.scrollTop=chat.scrollHeight;}
+function addMsg(type,content,rd){var chat=document.getElementById("debateChat");if(type==="system"){var dv4=document.createElement("div");dv4.style.cssText="text-align:center;padding:10px;color:rgba(255,215,180,0.25);font-size:13px;letter-spacing:2px;";dv4.textContent=content;chat.appendChild(dv4)}else{if(type==="ai"){var lb=document.createElement("div");lb.className="msg-round-label";lb.textContent="-- 第 "+rd+" 回合 --";chat.appendChild(lb)}var dv2=document.createElement("div");dv2.className="msg "+type;var now=new Date();var ts=(now.getHours()<10?"0":"")+now.getHours()+":"+(now.getMinutes()<10?"0":"")+now.getMinutes();dv2.innerHTML='<div class=\"msg-sender\">'+(type==="ai"?"&#x1F916; AI辩手":"&#x1F464; "+currentUser)+'</div><div>'+content+'</div><div class=\"msg-time\">'+ts+'</div>';chat.appendChild(dv2)}if(type==="ai"){var sb=document.createElement("button");sb.className="speak-btn";sb.textContent="🔊";sb.title="点击朗读";sb.onclick=function(){speakText(content)};dv2.appendChild(sb);if(window.autoSpeak)speakText(content)}chat.scrollTop=chat.scrollHeight;}
 
 var curReport=null;async function endDebate(){if(!debateActive)return;if(roundNum<5){addMsg("system","辩论需至少进行5轮才能结束。当前："+roundNum+"/5轮，请继续辩论。","");return}debateActive=false;document.getElementById("startDebateBtn").disabled=false;document.getElementById("startDebateBtn").textContent="▶ 开始辩论";document.getElementById("endDebateBtn").disabled=true;document.getElementById("endDebateBtn").style.opacity="0.3";addMsg("system","辩论结束，正在生成报告...","");try{await fetch("/api/debate/end",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({session_id:sessionId})})}catch(e){}try{var r=await fetch("/api/scoring/report",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({session_id:sessionId,username:currentUser})});var d=await r.json();if(d.success){curReport=d.report;setTimeout(function(){showReportPage(d.report)},500)}else{addMsg("system","报告生成失败","")}}catch(e){addMsg("system","报告生成失败："+e.message,"")}}
 
@@ -359,6 +367,25 @@ function closeHistory(){document.getElementById("historyModal").style.display="n
 function loadReport(rid){closeHistory();fetch("/api/report/get",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({report_id:rid})}).then(function(r){return r.json()}).then(function(d){if(d.success&&d.report){curReport=d.report;showReportPage(d.report)}})}
 
 document.addEventListener("keydown",function(e){if(e.key==="Enter"&&debateActive)sendMessage()});
+
+
+var autoSpeak=false;
+function speakText(text){
+    if(!window.speechSynthesis)return;
+    window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang="zh-CN";
+    u.rate=1.0;
+    u.pitch=1.0;
+    var vs=window.speechSynthesis.getVoices();
+    for(var v of vs){if(v.lang.startsWith("zh")){u.voice=v;break}}
+    window.speechSynthesis.speak(u)
+}
+function toggleTTS(){
+    autoSpeak=!autoSpeak;
+    var btn=document.getElementById("ttsBtn");
+    if(btn){btn.classList.toggle("active",autoSpeak);btn.textContent=autoSpeak?"🔊 语音":"🔇 静音"}
+}
 
 </script>
 
