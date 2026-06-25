@@ -64,10 +64,22 @@ if !errorlevel! equ 0 (
             rmdir /s /q "%~dp0node_modules" 2>nul
             echo [OK] ffmpeg installed
         ) else (
-            echo [WARN] npm failed. Download ffmpeg.exe manually to this folder
+            echo [INFO] Trying direct download via PowerShell...
+            powershell -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://github.com/eugeneware/ffmpeg-static/raw/master/ffmpeg-win32-x64' -OutFile '%~dp0ffmpeg.exe'" >nul 2>&1
+            if exist "%~dp0ffmpeg.exe" (
+                echo [OK] ffmpeg downloaded
+            ) else (
+                echo [WARN] Auto-download failed: https://www.gyan.dev/ffmpeg/builds/
+            )
         )
     ) else (
-        echo [WARN] Node.js not found. Download ffmpeg.exe manually to this folder
+        echo [INFO] Trying direct download via PowerShell...
+        powershell -Command "[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://github.com/eugeneware/ffmpeg-static/raw/master/ffmpeg-win32-x64' -OutFile '%~dp0ffmpeg.exe'" >nul 2>&1
+        if exist "%~dp0ffmpeg.exe" (
+            echo [OK] ffmpeg downloaded
+        ) else (
+            echo [WARN] Auto-download failed: https://www.gyan.dev/ffmpeg/builds/
+        )
     )
 )
 echo.
