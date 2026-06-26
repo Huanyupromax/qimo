@@ -177,9 +177,13 @@ def kb_train():
 
 @app.route("/api/report/list",methods=["POST"])
 def rlist():
-    d=request.get_json(force=True);u=d.get("username","")
-    if not u: return jsonify({"success":False})
-    return jsonify({"success":True,"reports":report_db.list(u)})
+    try:
+        d=request.get_json(force=True);u=d.get("username","")
+        if not u: return jsonify({"success":False})
+        return jsonify({"success":True,"reports":report_db.list(u)})
+    except Exception as e:
+        print(f"rlist error: {e}")
+        return jsonify({"success":False,"error":str(e)})
 
 @app.route("/api/report/get",methods=["POST"])
 def rget():
