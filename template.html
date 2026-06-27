@@ -230,7 +230,7 @@
 
 // Stars
 var mStars=[];
-for(var i=0;i<120;i++){
+for(var i=0;i<60;i++){
     mStars.push({
         x:Math.random()*mW, y:Math.random()*mH,
         r:Math.random()*1.2+0.3, v:Math.random()*0.5+0.2,
@@ -255,7 +255,7 @@ function addMeteor(){
         hue:hue, hs:2+Math.random()*1.5
     });
 }
-for(var i=0;i<3;i++)addMeteor();
+for(var i=0;i<2;i++)addMeteor();
 
 function mAnim(){if(!mx)return;
     mx.fillStyle="rgba(0,0,0,0.15)";
@@ -301,7 +301,7 @@ function mAnim(){if(!mx)return;
     }
     
     // Spawn new meteors
-    if(Math.random()<Math.max(0.008,0.035-mMeteors.length*0.002))addMeteor();
+    if(Math.random()<Math.max(0.003,0.02-mMeteors.length*0.001))addMeteor();
     
     requestAnimationFrame(mAnim);
 }
@@ -311,7 +311,7 @@ window.addEventListener("resize",function(){
     mc.width=window.innerWidth;mc.height=window.innerHeight;
     mW=mc.width;mH=mc.height;
     mStars=[];
-    for(var i=0;i<200;i++){
+    for(var i=0;i<60;i++){
         mStars.push({
             x:Math.random()*mW,y:Math.random()*mH,
             r:Math.random()*1.2+0.3,v:Math.random()*0.5+0.2,
@@ -365,7 +365,7 @@ async function startDebate(){var sel=document.getElementById("topicSelect").valu
 
 async function sendMessage(){var inp=document.getElementById("chatInput"),msg=inp.value.trim();if(!msg||!debateActive)return;inp.value="";addMsg("user",msg,roundNum);captureFace();try{var r=await fetch("/api/debate/message",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({session_id:sessionId,message:msg,round:roundNum})});var d=await r.json();if(d.success){roundNum++;document.getElementById("roundDisplay").textContent=roundNum;addMsg("ai",d.message,roundNum)}else{addMsg("system","AI暂时无法回应","")}}catch(e){addMsg("system","网络错误","")}}
 
-function addMsg(type,content,rd){var chat=document.getElementById("debateChat");if(type==="system"){var dv4=document.createElement("div");dv4.style.cssText="text-align:center;padding:10px;color:rgba(255,215,180,0.25);font-size:13px;letter-spacing:2px;";dv4.textContent=content;chat.appendChild(dv4)}else{if(type==="ai"){var lb=document.createElement("div");lb.className="msg-round-label";lb.textContent="-- 第 "+rd+" 回合 --";chat.appendChild(lb)}var dv2=document.createElement("div");dv2.className="msg "+type;var now=new Date();var ts=(now.getHours()<10?"0":"")+now.getHours()+":"+(now.getMinutes()<10?"0":"")+now.getMinutes();dv2.innerHTML='<div class=\"msg-sender\">'+(type==="ai"?"&#x1F916; AI辩手":"&#x1F464; "+currentUser)+'</div><div>'+content+'</div><div class=\"msg-time\">'+ts+'</div>';chat.appendChild(dv2)}if(type==="ai"){var sb=document.createElement("button");sb.className="speak-btn";sb.textContent="🔊";sb.title="点击朗读";sb.onclick=function(){speakText(content)};dv2.appendChild(sb);if(window.autoSpeak)setTimeout(function(){speakText(content)},800)}chat.scrollTop=chat.scrollHeight;}
+function addMsg(type,content,rd){var chat=document.getElementById("debateChat");if(type==="system"){var dv4=document.createElement("div");dv4.style.cssText="text-align:center;padding:10px;color:rgba(255,215,180,0.25);font-size:13px;letter-spacing:2px;";dv4.textContent=content;chat.appendChild(dv4)}else{if(type==="ai"){var lb=document.createElement("div");lb.className="msg-round-label";lb.textContent="-- 第 "+rd+" 回合 --";chat.appendChild(lb)}var dv2=document.createElement("div");dv2.className="msg "+type;var now=new Date();var ts=(now.getHours()<10?"0":"")+now.getHours()+":"+(now.getMinutes()<10?"0":"")+now.getMinutes();dv2.innerHTML='<div class=\"msg-sender\">'+(type==="ai"?"&#x1F916; AI辩手":"&#x1F464; "+currentUser)+'</div><div>'+content+'</div><div class=\"msg-time\">'+ts+'</div>';chat.appendChild(dv2)}if(type==="ai"){var sb=document.createElement("button");sb.className="speak-btn";sb.textContent="🔊";sb.title="点击朗读";sb.onclick=function(){speakText(content,sb)};dv2.appendChild(sb);if(window.autoSpeak)setTimeout(function(){speakText(content)},800)}chat.scrollTop=chat.scrollHeight;}
 
 var curReport=null;async function endDebate(){if(!debateActive)return;if(roundNum<5){addMsg("system","辩论需至少进行5轮才能结束。当前："+roundNum+"/5轮，请继续辩论。","");return}debateActive=false;document.getElementById("startDebateBtn").disabled=false;document.getElementById("startDebateBtn").textContent="▶ 开始辩论";document.getElementById("endDebateBtn").disabled=true;document.getElementById("endDebateBtn").style.opacity="0.3";addMsg("system","辩论结束，正在生成报告...","");try{await fetch("/api/debate/end",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({session_id:sessionId})})}catch(e){}try{var r=await fetch("/api/scoring/report",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({session_id:sessionId,username:currentUser})});var d=await r.json();if(d.success){curReport=d.report;setTimeout(function(){showReportPage(d.report)},500)}else{addMsg("system","报告生成失败","")}}catch(e){addMsg("system","报告生成失败："+e.message,"")}}
 
@@ -383,20 +383,24 @@ document.addEventListener("keydown",function(e){if(e.key==="Enter"&&debateActive
 
 
 var autoSpeak=false;
-function speakText(text){
-    if(!window.speechSynthesis){playBackend(text);return}
-    window.speechSynthesis.cancel();
-    var u=new SpeechSynthesisUtterance(text);
-    u.lang="zh-CN";u.rate=window.ttsSpeed||1.0;u.pitch=1.0;
-    u.onerror=function(){playBackend(text)};
-    var vs=window.speechSynthesis.getVoices();
-    if(vs.length>0){for(var v of vs){if(v.lang.startsWith("zh")){u.voice=v;break}}}
-    setTimeout(function(){try{window.speechSynthesis.speak(u)}catch(e){playBackend(text)}},200)
+function speakText(text,btn){
+if(!window.speechSynthesis){playBackend(text,btn);return}
+window.speechSynthesis.cancel();
+var u=new SpeechSynthesisUtterance(text);
+u.lang="zh-CN";u.rate=window.ttsSpeed||1.0;u.pitch=1.0;
+u.onerror=function(){playBackend(text,btn)};
+var vs=window.speechSynthesis.getVoices();
+if(vs.length>0){for(var v of vs){if(v.lang.startsWith("zh")){u.voice=v;break}}}
+setTimeout(function(){try{window.speechSynthesis.speak(u)}catch(e){playBackend(text,btn)}},200)
 }
-function playBackend(text){
+var _ttsAudio=null,_ttsBtn=null;
+function playBackend(text,btn){
+    if(_ttsAudio&&_ttsBtn===btn&&!_ttsAudio.paused){_ttsAudio.pause();if(btn)btn.textContent='▶️';return}
+    if(_ttsAudio&&_ttsBtn===btn&&_ttsAudio.paused){_ttsAudio.play();if(btn)btn.textContent='⏸️';return}
+    if(_ttsAudio){_ttsAudio.pause();_ttsAudio=null;if(_ttsBtn)_ttsBtn.textContent='🔊';_ttsBtn=null}
     fetch("/api/tts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:text})})
     .then(function(r){return r.json()})
-    .then(function(d){if(d.success){var a=new Audio("data:audio/mp3;base64,"+d.audio);a.playbackRate=window.ttsSpeed||1.0;a.play()}})
+    .then(function(d){if(d.success){var a=new Audio("data:audio/mp3;base64,"+d.audio);a.playbackRate=window.ttsSpeed||1.0;_ttsAudio=a;_ttsBtn=btn;if(btn)btn.textContent='⏸️';a.onended=function(){_ttsAudio=null;if(btn)btn.textContent='🔊'};a.play()}})
     .catch(function(){})
 }
 function toggleTTS(){
