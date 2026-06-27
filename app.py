@@ -268,6 +268,23 @@ def ai(sid):
     return random.choice(rrs)
 
 
+
+@app.route("/api/tts",methods=["POST"])
+def tts_api():
+    d=request.get_json(force=True);txt=d.get("text","")
+    if not txt: return jsonify({"success":False})
+    import tempfile, base64, asyncio, edge_tts
+    tmp=tempfile.NamedTemporaryFile(suffix=".mp3",delete=False);tmp.close()
+    try:
+        asyncio.run(edge_tts.Communicate(txt,"zh-CN-XiaoxiaoNeural").save(tmp.name))
+        with open(tmp.name,"rb") as f: audio=base64.b64encode(f.read()).decode("ascii")
+        os.unlink(tmp.name)
+        return jsonify({"success":True,"audio":audio})
+    except Exception as e:
+        try: os.unlink(tmp.name)
+        except: pass
+        return jsonify({"success":False,"error":str(e)})
+
 if __name__ == "__main__":
     import webbrowser
     webbrowser.open("http://127.0.0.1:5000")
