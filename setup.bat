@@ -3,6 +3,8 @@ setlocal enabledelayedexpansion
 
 set PIP_CACHE_DIR=%~dp0.pip_cache
 if not exist "%PIP_CACHE_DIR%" mkdir "%PIP_CACHE_DIR%" >nul
+set npm_config_cache=%~dp0.npm_cache
+if not exist "%npm_config_cache%" mkdir "%npm_config_cache%" >nul
 
 title BianJing Installer
 chcp 65001 >nul
@@ -121,6 +123,10 @@ echo Enter your DeepSeek API Key (get from https://platform.deepseek.com/):
 set /p KEY="API Key: "
 echo DEEPSEEK_API_KEY=%KEY%> "%~dp0.env"
 echo [OK] Saved
+
+:: Clean up cache folders
+if exist "%~dp0.pip_cache" rmdir /s /q "%~dp0.pip_cache" >nul 2>&1
+if exist "%~dp0.npm_cache" rmdir /s /q "%~dp0.npm_cache" >nul 2>&1
 
 :final
 echo.
